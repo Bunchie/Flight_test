@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="js-counter">
+    <p>Count: <span class="js-count"> </span></p>
+    <button class="btn btn-success js-increment"> +</button>
+    <button class="btn btn-danger js-decrement"> -</button>
+</div>
+
+<script src="node_modules/underscore/underscore-min.js"></script>
+<!-- jQuery -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!-- Flight release -->
+<script src="http://flightjs.github.io/release/latest/flight.min.js"></script>
+
+<script>
+
+    var Inbox = flight.component(counter);
+
+    function counter() {
+
+        this.defaultAttrs({
+            'counterDisplay': '.js-count',
+            'incrementButton': '.js-increment',
+            'decrementButton': '.js-decrement'
+        });
+
+        this.after('initialize', function () {
+
+            this.select('counterDisplay').text('0');
+
+            this.on('click', {
+
+                'incrementButton': function () {
+
+                    var i = $('.js-count').text();
+                    console.log(i);
+                    var j = Number(i);
+                    j = j + 1;
+
+                    $('.js-count').text(j);
+                },
+                'decrementButton': function () {
+
+                    var i = $('.js-count').text();
+                    console.log(i);
+                    var j = Number(i);
+                    j = j - 1;
+
+                    $('.js-count').text(j);
+                }
+
+            });
+
+        });
+    }
+
+    Inbox.attachTo('.js-counter');
+
+</script>
+
+</body>
+</html>
