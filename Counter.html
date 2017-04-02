@@ -19,6 +19,20 @@
     <button class="btn btn-danger js-decrement"> -</button>
 </div>
 
+<br>
+
+<div class="js-show-img">
+    <input type="text" class="trigg">
+    <img src="" alt="No IMG" class="current-img">
+    <div class="test"></div>
+    <button class="btn show-img">SHOW IMG</button>
+</div>
+
+<div id="top">2
+    <div id="lvl1a">1
+    </div>
+</div>
+
 <script src="node_modules/underscore/underscore-min.js"></script>
 <!-- jQuery -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -26,6 +40,78 @@
 <script src="http://flightjs.github.io/release/latest/flight.min.js"></script>
 
 <script>
+
+   var Top = flight.component(topp);
+    var Lvl1a = flight.component(lvl1a);
+    function topp() {
+        this.after('initialize', function () {
+            console.log('[DEBUG] Top initialized.');
+
+            this.on('broadcastEvent', function (e, data) {
+                console.log("[DEBUG] Broadcast recived: " + data.message);
+            });
+            this.trigger('broadcastEvent', {
+                message: "This is a broadcast message."
+            });
+        });
+    }
+
+    function lvl1a() {
+        this.after('initialize', function () {
+            console.log('[DEBUG] Lvl 1 a initialized.');
+
+            $(document.body).on('broadcastEvent', function (e, data) {
+                console.log("[DEBUG] Broadcast recived: " + data.message);
+            });
+        });
+    }
+
+    Top.attachTo('#top');
+    Lvl1a.attachTo('#lvl1a');
+
+    var Show = flight.component(show);
+
+    function show() {
+        this.attributes({
+            'imgDisplay': '.js-show-img',
+            'currentImg': '.current-img',
+            'buttonShow': '.show-img',
+            'test': '.test',
+            'trigg': '.trigg'
+        });
+
+        this.after('initialize', function () {
+
+            this.select('test').append('<h1>Hello world!</h1>');
+
+            this.trigger('trigg', {
+                type: 'escapePressed',
+                defaultBehavior: this.blur
+            });
+            this.trigger('click', {
+                message: "This is a broadcast message."
+            });
+
+            this.on('click', {
+
+                'currentImg': function (e,data) {
+                    $('.current-img').attr('src', 'http://img.gowius.com/website/var/tmp/image-thumbnails/0/3/thumb__blog/img-4.jpeg');
+                    $('.current-img').hide();
+                    console.log("[!!!!!!!] Broadcast recived: " + data.message);
+                },
+                'buttonShow': function () {
+                    $('.current-img').show();
+                },
+                'test': function () {
+                    $('.test').html("!!!!!!!!!!!!!!!");
+                }
+
+            });
+
+        });
+    }
+
+    Show.attachTo('.js-show-img');
 
     var Inbox = flight.component(counter);
 
